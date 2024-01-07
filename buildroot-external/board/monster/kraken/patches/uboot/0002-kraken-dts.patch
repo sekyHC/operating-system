@@ -1,0 +1,96 @@
+--- ./arch/arm/dts/imx8mm-evk.dts
++++ ./arch/arm/dts/imx8mm-evk.dts
+@@ -115,9 +115,9 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
+-		ethphy0: ethernet-phy@0 {
++		ethphy0: ethernet-phy@5 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+-			reg = <0>;
++			reg = <5>;
+ 		};
+ 	};
+ };
+@@ -286,65 +286,6 @@
+ 			};
+ 		};
+ 	};
+-
+-	ptn5110: tcpc@50 {
+-		compatible = "nxp,ptn5110";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_typec1>;
+-		reg = <0x50>;
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <11 8>;
+-		status = "okay";
+-
+-		typec1_con: connector {
+-			compatible = "usb-c-connector";
+-			label = "USB-C";
+-			power-role = "dual";
+-			data-role = "dual";
+-			try-power-role = "sink";
+-			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+-			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+-				     PDO_VAR(5000, 20000, 3000)>;
+-			op-sink-microwatt = <15000000>;
+-			self-powered;
+-		};
+-	};
+-
+-	ptn5110_2: tcpc@52 {
+-		compatible = "nxp,ptn5110";
+-		reg = <0x52>;
+-		status = "okay";
+-
+-		typec2_con: connector {
+-			compatible = "usb-c-connector";
+-			label = "USB-C";
+-			power-role = "dual";
+-			data-role = "dual";
+-			try-power-role = "sink";
+-			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+-			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+-				     PDO_VAR(5000, 20000, 3000)>;
+-			op-sink-microwatt = <15000000>;
+-			self-powered;
+-		};
+-	};
+-};
+-
+-&i2c3 {
+-	clock-frequency = <100000>;
+-	pinctrl-names = "default", "gpio";
+-	pinctrl-0 = <&pinctrl_i2c3>;
+-	pinctrl-1 = <&pinctrl_i2c3_gpio>;
+-	scl-gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
+-	sda-gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
+-	status = "okay";
+-
+-	pca6416: gpio@20 {
+-		compatible = "ti,tca6416";
+-		reg = <0x20>;
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-	};
+ };
+ 
+ &sai3 {
+@@ -367,13 +308,13 @@
+ };
+ 
+ &usbotg1 {
++	dr_mode = "peripheral";
+ 	status = "okay";
+-	extcon = <&ptn5110>;
+ };
+ 
+ &usbotg2 {
++	dr_mode = "peripheral";
+ 	status = "okay";
+-	extcon = <&ptn5110_2>;
+ };
+ 
+ &usdhc2 {
