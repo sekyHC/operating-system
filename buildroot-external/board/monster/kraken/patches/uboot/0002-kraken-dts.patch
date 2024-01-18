@@ -1,62 +1,43 @@
---- ./arch/arm/dts/imx8mm-evk.dts
-+++ ./arch/arm/dts/imx8mm-evk.dts
-@@ -115,9 +115,9 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
+--- ./arch/arm/dts/fsl-imx8mm-evk.dts
++++ ./arch/arm/dts/fsl-imx8mm-evk.dts
+@@ -17,7 +17,7 @@
+ #include "fsl-imx8mm.dtsi"
  
--		ethphy0: ethernet-phy@0 {
-+		ethphy0: ethernet-phy@5 {
- 			compatible = "ethernet-phy-ieee802.3-c22";
--			reg = <0>;
-+			reg = <5>;
- 		};
- 	};
- };
-@@ -286,65 +286,6 @@
- 			};
- 		};
- 	};
+ / {
+-	model = "FSL i.MX8MM EVK board";
++	model = "FSL i.MX8MM Kraken board";
+ 	compatible = "fsl,imx8mm-evk", "fsl,imx8mm";
+ 
+ 	chosen {
+@@ -400,42 +400,6 @@
+ 	scl-gpios = <&gpio5 16 GPIO_ACTIVE_HIGH>;
+ 	sda-gpios = <&gpio5 17 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
 -
--	ptn5110: tcpc@50 {
--		compatible = "nxp,ptn5110";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_typec1>;
+-	typec_ptn5110_1: ptn5110@50 {
+-		compatible = "usb,tcpci";
 -		reg = <0x50>;
--		interrupt-parent = <&gpio2>;
--		interrupts = <11 8>;
--		status = "okay";
--
--		typec1_con: connector {
--			compatible = "usb-c-connector";
--			label = "USB-C";
--			power-role = "dual";
--			data-role = "dual";
--			try-power-role = "sink";
--			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
--			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
--				     PDO_VAR(5000, 20000, 3000)>;
--			op-sink-microwatt = <15000000>;
--			self-powered;
--		};
+-		src-pdos = <0x380190c8>;
+-		snk-pdos = <0x380190c8 0x3802d0c8>;
+-		max-snk-mv = <9000>;
+-		max-snk-ma = <2000>;
+-		op-snk-mw = <9000>;
+-		max-snk-mw = <18000>;
+-		port-type = "drp";
+-		default-role = "sink";
 -	};
 -
--	ptn5110_2: tcpc@52 {
--		compatible = "nxp,ptn5110";
+-	typec_ptn5110_2: ptn5110@52 {
+-		compatible = "usb,tcpci";
 -		reg = <0x52>;
--		status = "okay";
--
--		typec2_con: connector {
--			compatible = "usb-c-connector";
--			label = "USB-C";
--			power-role = "dual";
--			data-role = "dual";
--			try-power-role = "sink";
--			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
--			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
--				     PDO_VAR(5000, 20000, 3000)>;
--			op-sink-microwatt = <15000000>;
--			self-powered;
--		};
+-		src-pdos = <0x380190c8>;
+-		snk-pdos = <0x380190c8 0x3802d0c8>;
+-		max-snk-mv = <9000>;
+-		max-snk-ma = <2000>;
+-		op-snk-mw = <9000>;
+-		max-snk-mw = <18000>;
+-		port-type = "drp";
+-		default-role = "sink";
 -	};
 -};
 -
@@ -68,29 +49,35 @@
 -	scl-gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
 -	sda-gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
 -	status = "okay";
--
--	pca6416: gpio@20 {
--		compatible = "ti,tca6416";
--		reg = <0x20>;
--		gpio-controller;
--		#gpio-cells = <2>;
--	};
  };
  
- &sai3 {
-@@ -367,13 +308,13 @@
+ &flexspi0 {
+@@ -465,12 +429,9 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
+-		ethphy0: ethernet-phy@0 {
++		ethphy0: ethernet-phy@5 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+-			reg = <0>;
+-			at803x,led-act-blind-workaround;
+-			at803x,eee-okay;
+-			at803x,vddio-1p8v;
++			reg = <5>;
+ 		};
+ 	};
+ };
+@@ -514,11 +474,11 @@
  };
  
  &usbotg1 {
 +	dr_mode = "peripheral";
  	status = "okay";
--	extcon = <&ptn5110>;
+-	extcon = <&typec_ptn5110_1>;
  };
  
  &usbotg2 {
 +	dr_mode = "peripheral";
  	status = "okay";
--	extcon = <&ptn5110_2>;
+-	extcon = <&typec_ptn5110_2>;
  };
- 
- &usdhc2 {
