@@ -1,0 +1,24 @@
+--- ./tools/env/fw_env.h	2019-12-04 06:40:55.596601532 +0100
++++ ./tools/env/fw_env.h	2019-12-04 09:41:58.170704017 +0100
+@@ -14,6 +14,21 @@
+  */
+ #define FW_ENV_API_VERSION	1
+ 
++// HC
++#undef CONFIG_FILE // do not use config file
++#define HAVE_REDUND	/* For systems with 2 env sectors */
++#define DEVICE1_NAME	"/dev/mmcblk2boot0"
++#define DEVICE2_NAME	"/dev/mmcblk2boot1"
++#define DEVICE1_OFFSET    0x0000
++#define ENV1_SIZE         0x20000
++#define DEVICE1_ESIZE     0x4000
++#define DEVICE1_ENVSECTORS     2
++#define DEVICE2_OFFSET    0x0000
++#define ENV2_SIZE         0x20000
++#define DEVICE2_ESIZE     0x4000
++#define DEVICE2_ENVSECTORS     2
++// /HC
++
+ struct env_opts {
+ #ifdef CONFIG_FILE
+ 	char *config_file;

@@ -1,0 +1,11 @@
+--- ./configs/imx8mm_evk_defconfig
++++ ./configs/imx8mm_evk_defconfig
+@@ -112,7 +112,7 @@ CONFIG_SYSRESET=y
+ CONFIG_SYSRESET_PSCI=y
+ CONFIG_DM_THERMAL=y
+ CONFIG_NXP_TMU=y
+-CONFIG_USB_TCPC=y
++#CONFIG_USB_TCPC=y
+ CONFIG_USB=y
+ CONFIG_USB_GADGET=y
+ CONFIG_DM_USB=y
