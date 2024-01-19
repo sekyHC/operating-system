@@ -1,0 +1,25 @@
+From fc36812cfd94a67e3be1e96f2aa0b4f40f4f85c1 Mon Sep 17 00:00:00 2001
+From: Troy Kisky <troy.kisky@boundarydevices.com>
+Date: Wed, 4 Sep 2019 18:21:11 -0700
+Subject: [PATCH] imx8mm_bl31_setup: allow uart4 from A53 processor
+
+Signed-off-by: Troy Kisky <troy.kisky@boundarydevices.com>
+---
+ plat/imx/imx8mm/imx8mm_bl31_setup.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/plat/imx/imx8mm/imx8mm_bl31_setup.c b/plat/imx/imx8mm/imx8mm_bl31_setup.c
+index aa1c336e..b806f418 100644
+--- a/plat/imx/imx8mm/imx8mm_bl31_setup.c
++++ b/plat/imx/imx8mm/imx8mm_bl31_setup.c
+@@ -310,7 +310,9 @@ void bl31_early_platform_setup2(u_register_t arg0, u_register_t arg1,
+ 
+ 	/* Assign M4 to domain 1 */
+ 	mmio_write_32(IMX_RDC_BASE + 0x204, 0x1);
+-	mmio_write_32(IMX_RDC_BASE + 0x518, 0xfc);
++#if 0
++	mmio_write_32(IMX_RDC_BASE + 0x518, 0xfc);	/* UART4, uncomment if M4 only access desired */
++#endif
+ 	mmio_write_32(IMX_RDC_BASE + 0x5A4, 0xf3);
+ 
+ #if defined (CSU_RDC_TEST)
